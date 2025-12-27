@@ -1,4 +1,4 @@
-package com.openFinanceData.marketFlow.engine.models;
+package com.openFinanceData.marketFlow.engine.cache;
 
 import java.util.Date;
 

@@ -1,7 +1,5 @@
 package com.openFinanceData.marketFlow.engine.cache;
 
-import com.openFinanceData.marketFlow.engine.models.RealSnapshot;
-
 public class MarketAsset {
 
     private final String symbol;

@@ -6,11 +6,11 @@ import com.openfinancedatalib.OpenFinanceData;
 
 public class OpenFinanceDataSource {
 
-    private final OpenFinanceData client;
+    private static final OpenFinanceData client = new OpenFinanceData();
     ObjectMapper mapper = new ObjectMapper();
 
     public OpenFinanceDataSource() {
-        this.client = new OpenFinanceData();
+        // this.client = new OpenFinanceData();
     }
 
     public OpenFinanceDataDTO getMarketData(String symbol) {
