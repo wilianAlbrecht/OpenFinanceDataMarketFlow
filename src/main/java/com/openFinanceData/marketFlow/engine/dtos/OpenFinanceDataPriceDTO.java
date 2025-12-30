@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class OpenFinanceDataDTO {
+public class OpenFinanceDataPriceDTO {
     
     private QuoteResponse quoteResponse;
     

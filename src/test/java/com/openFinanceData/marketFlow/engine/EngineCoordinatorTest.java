@@ -2,7 +2,7 @@ package com.openFinanceData.marketFlow.engine;
 
 import org.junit.jupiter.api.Test;
 
-import com.openFinanceData.marketFlow.engine.cache.RealSnapshot;
+import com.openFinanceData.marketFlow.engine.cache.marketPrice.RealSnapshot;
 
 public class EngineCoordinatorTest {
 

@@ -1,19 +1,22 @@
 package com.openFinanceData.marketFlow.engine;
 
-import java.util.Date;
-
 import org.springframework.stereotype.Service;
 
-import com.openFinanceData.marketFlow.engine.cache.MarketAsset;
-import com.openFinanceData.marketFlow.engine.cache.MarketPriceStore;
-import com.openFinanceData.marketFlow.engine.cache.RealSnapshot;
+import com.openFinanceData.marketFlow.engine.cache.marketPrice.MarketAsset;
+import com.openFinanceData.marketFlow.engine.cache.marketPrice.MarketPriceStore;
+import com.openFinanceData.marketFlow.engine.cache.marketPrice.RealSnapshot;
+import com.openFinanceData.marketFlow.engine.calculator.EnginePriceCalculator;
+import com.openFinanceData.marketFlow.engine.calculator.EngineVariationPriceCalculator;
 import com.openFinanceData.marketFlow.engine.datasourse.OpenFinanceDataSource;
-import com.openFinanceData.marketFlow.engine.dtos.OpenFinanceDataDTO;
+import com.openFinanceData.marketFlow.engine.dtos.OpenFinanceDataHistoryDTO;
+import com.openFinanceData.marketFlow.engine.dtos.OpenFinanceDataPriceDTO;
 
 @Service
 public class EngineCoordinator {
 
     OpenFinanceDataSource openFinanceDataSource = new OpenFinanceDataSource();
+    EnginePriceCalculator engineCalculator = new EnginePriceCalculator();
+    EngineVariationPriceCalculator engineAveragePriceCalculator = new EngineVariationPriceCalculator();
 
     public RealSnapshot getPriceCoordinator(String symbol) {
 
@@ -22,18 +25,13 @@ public class EngineCoordinator {
         if (marketAsset == null) {
 
             openFinanceDataSource = new OpenFinanceDataSource();
-            OpenFinanceDataDTO dto = openFinanceDataSource.getMarketData(symbol);
+            OpenFinanceDataPriceDTO priceDTO = openFinanceDataSource.getMarketData(symbol);
+            OpenFinanceDataHistoryDTO historyDTO = openFinanceDataSource.getHistory(symbol);
 
+            engineAveragePriceCalculator.calculateVariationPrice(historyDTO);
+            
 
-            RealSnapshot snapshot = new RealSnapshot(
-                    dto.getQuoteResponse().getResult()[0].getSymbol(),
-                    null,
-                    null,
-                    null,
-                    dto.getQuoteResponse().getResult()[0].getRegularMarketTime(),
-                    new Date(),
-                    dto.getQuoteResponse().getResult()[0].getMarketState());
-
+            RealSnapshot snapshot = engineCalculator.calculateRealSnapshot(priceDTO);
             return snapshot;
 
         } else {
